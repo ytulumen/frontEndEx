@@ -49,7 +49,7 @@ public class RoleServiceImpl implements RoleService{
         return null;
     }
     public void saveRoles(Roles role) {
-        String url = "http://localhost:8080/workerMng/role";
+        String url = "http://localhost:8080/rest/role";
         Gson gson = new Gson();
         String send = gson.toJson(role);
         try {
@@ -72,7 +72,7 @@ public class RoleServiceImpl implements RoleService{
             daos.flush();
             daos.close();
             int responseCode = con.getResponseCode();
-            System.out.println("\nSAVE USER___Sending 'GET' request to URL : " + url);
+            System.out.println("\nSAVE USER___Sending 'POST' request to URL : " + url);
             System.out.println("Response Code : " + responseCode + "SEND " + send);
 
             BufferedReader in = new BufferedReader(
@@ -88,7 +88,7 @@ public class RoleServiceImpl implements RoleService{
     }
 
     public void updateRoles(Roles role) {
-        String url = "http://localhost:8080/workerMng/role";
+        String url = "http://localhost:8080/rest/role";
         Gson gson = new Gson();
         String send = gson.toJson(role);
         try {
@@ -111,7 +111,7 @@ public class RoleServiceImpl implements RoleService{
             daos.flush();
             daos.close();
             int responseCode = con.getResponseCode();
-            System.out.println("\nSAVE USER___Sending 'GET' request to URL : " + url);
+            System.out.println("\nSAVE USER___Sending 'PUT' request to URL : " + url);
             System.out.println("Response Code : " + responseCode + "SEND " + send);
 
             BufferedReader in = new BufferedReader(
@@ -127,7 +127,7 @@ public class RoleServiceImpl implements RoleService{
     }
 
     public void deleteRolesById(long id) {
-        String url = "http://localhost:8080/workerMng/role/id="+id;
+        String url = "http://localhost:8080/rest/role/id="+id;
         try {
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -139,7 +139,7 @@ public class RoleServiceImpl implements RoleService{
             con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
             int responseCode = con.getResponseCode();
-            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("\nSending 'DELETE' request to URL : " + url);
             System.out.println("Response Code : " + responseCode);
         }catch (java.net.MalformedURLException e){
             e.printStackTrace();
@@ -168,7 +168,7 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public void findAll() {
 
-        String url = "http://localhost:8080/workerMng/role";
+        String url = "http://localhost:8080/rest/role";
         try {
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();

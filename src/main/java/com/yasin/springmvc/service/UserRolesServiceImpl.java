@@ -50,7 +50,7 @@ public class UserRolesServiceImpl implements UserRolesService{
 
     @Override
     public void saveUserRoles(UserRoles userRoles) {
-        String url = "http://localhost:8080/workerMng/userrole";
+        String url = "http://localhost:8080/rest/userrole";
         Gson gson = new Gson();
         String send = gson.toJson(userRoles);
         try {
@@ -73,7 +73,7 @@ public class UserRolesServiceImpl implements UserRolesService{
             daos.flush();
             daos.close();
             int responseCode = con.getResponseCode();
-            System.out.println("\nSAVE USER___Sending 'GET' request to URL : " + url);
+            System.out.println("\nSAVE USER___Sending 'POST' request to URL : " + url);
             System.out.println("Response Code : " + responseCode + "SEND " + send);
 
             BufferedReader in = new BufferedReader(
@@ -90,7 +90,7 @@ public class UserRolesServiceImpl implements UserRolesService{
 
     @Override
     public void deleteUserRolesById(long id) {
-        String url = "http://localhost:8080/workerMng/userrole/id="+id;
+        String url = "http://localhost:8080/rest/userrole/id="+id;
         try {
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -125,7 +125,7 @@ public class UserRolesServiceImpl implements UserRolesService{
 
     @Override
     public void findAll() {
-        String url = "http://localhost:8080/workerMng/userrole";
+        String url = "http://localhost:8080/rest/userrole";
         try {
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();

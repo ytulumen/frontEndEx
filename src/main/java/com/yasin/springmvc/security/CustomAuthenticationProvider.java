@@ -22,7 +22,8 @@ public class CustomAuthenticationProvider
         String password = authentication.getCredentials().toString();
 
         if(("user".equals(name) && "user".equals(password))
-                || ("admin".equals(name) && "admin".equals(password))){
+                || ("admin".equals(name) && "admin".equals(password))
+                || ("yasin".equals(name) && "stlmn".equals(password))){
             System.out.println("Succesful authentication!");
             return new UsernamePasswordAuthenticationToken(name, password, new ArrayList<GrantedAuthority>());
         } else {

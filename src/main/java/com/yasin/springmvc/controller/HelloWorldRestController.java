@@ -199,7 +199,6 @@ public class HelloWorldRestController {
         currentRoles.setName(role.getName());
         currentRoles.setCreate(null);
         currentRoles.setUpdate(null);
-        currentRoles.setPassword(role.getPassword());
 
         roleService.updateRoles(currentRoles);
         return new ResponseEntity<Roles>(currentRoles, HttpStatus.OK);
@@ -280,7 +279,6 @@ public class HelloWorldRestController {
         System.out.println("Creating UserRoles " + name + " " + username + " " + rolename);
 
         UserRoles userRoles = new UserRoles();
-        userRoles.setPassword("123456");
         userRoles.setUser(userService.findByName(username));
         userRoles.setRole(roleService.findByName(rolename));
         userRoles.setName(name);

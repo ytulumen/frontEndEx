@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 
 @Service("userService")
 @Component
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService {
 
     private static final AtomicLong counter = new AtomicLong();
 
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     public void saveUser(User user) {
-        String url = "http://localhost:8080/workerMng/user";
+        String url = "http://localhost:8080/rest/user";
         Gson gson = new Gson();
         String send = gson.toJson(user);
         try {
@@ -97,10 +97,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
     }
 
-
-
     public void updateUser(User user) {
-        String url = "http://localhost:8080/workerMng/user";
+        String url = "http://localhost:8080/rest/user";
         Gson gson = new Gson();
         String send = gson.toJson(user);
         try {
@@ -139,7 +137,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     public void deleteUserById(long id) {
-        String url = "http://localhost:8080/workerMng/user/id="+id;
+        String url = "http://localhost:8080/rest/user/id="+id;
         try {
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -180,7 +178,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void findAll() {
 
-        String url = "http://localhost:8080/workerMng/user";
+        String url = "http://localhost:8080/rest/user";
         try {
             URL obj = new URL(url);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -221,12 +219,5 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = findByName(s);
-        GrantedAuthority authority = new SimpleGrantedAuthority("user");
-        UserDetails userDetails = (UserDetails)new org.springframework.security.core.userdetails.User(user.getName(),
-                user.getPassword(), Arrays.asList(authority));
-        return userDetails;
-    }
+
 }
