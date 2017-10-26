@@ -1,5 +1,7 @@
 package com.yasin.springmvc.util;
 
+import com.yasin.springmvc.service.RoleServiceView;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -53,9 +55,11 @@ public class NetworkUtil {
                     response.append(inputLine);
                 }
                 System.out.println(response.toString());
-                String res = response.substring(response.indexOf("access_token")+15, response.indexOf("\"", response.indexOf("access_token")+16));
-                System.out.println("result " + res);
-                accessToken = res;
+                if(isOauth) {
+                    String res = response.substring(response.indexOf("access_token")+15, response.indexOf("\"", response.indexOf("access_token")+16));
+                    System.out.println("result " + res);
+                    accessToken = res;
+                }
             }
             in.close();
         }catch (java.net.MalformedURLException e){
