@@ -2,12 +2,12 @@ package com.yasin.springmvc.controller;
 
 import java.util.List;
 
-import com.yasin.springmvc.service.RoleService;
-import com.yasin.springmvc.service.UserRolesService;
+import com.yasin.springmvc.service.RoleServiceView;
+import com.yasin.springmvc.service.UserRolesServiceView;
 import com.yasin.model.Roles;
 import com.yasin.model.User;
 import com.yasin.model.UserRoles;
-import com.yasin.springmvc.service.UserService;
+import com.yasin.springmvc.service.UserServiceView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,20 +24,20 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class HelloWorldRestController {
 
     @Autowired
-    UserService userService;  //Service which will do all data retrieval/manipulation work
+    UserServiceView userServiceView;  //Service which will do all data retrieval/manipulation work
 
     @Autowired
-    RoleService roleService;
+    RoleServiceView roleServiceView;
 
     @Autowired
-    UserRolesService userroleService;
+    UserRolesServiceView userroleService;
 
     //-------------------Retrieve All Users--------------------------------------------------------
 
     @RequestMapping(value = "/user/", method = RequestMethod.GET)
     public ResponseEntity<List<User>> listAllUsers() throws Exception{
-        userService.findAll();
-        List<User> users = userService.findAllUsers();
+        userServiceView.findAll();
+        List<User> users = userServiceView.findAll();
         if(users.isEmpty()){
             return new ResponseEntity<List<User>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
         }
@@ -51,7 +51,7 @@ public class HelloWorldRestController {
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getUser(@PathVariable("id") long id) {
         System.out.println("Fetching User with id " + id);
-        User user = userService.findById(id);
+        User user = userServiceView.findById(id);
         if (user == null) {
             System.out.println("User with id " + id + " not found");
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
@@ -67,12 +67,12 @@ public class HelloWorldRestController {
     public ResponseEntity<Void> createUser(@RequestBody User user,    UriComponentsBuilder ucBuilder) {
         System.out.println("Creating User " + user.getName());
 
-        if (userService.isUserExist(user)) {
+        if (userServiceView.isUserExist(user)) {
             System.out.println("A User with name " + user.getName() + " already exist");
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }
 
-        userService.saveUser(user);
+        userServiceView.save(user);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/user/{id}").buildAndExpand(user.getId()).toUri());
@@ -87,7 +87,7 @@ public class HelloWorldRestController {
     public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User user) {
         System.out.println("Updating User " + id);
 
-        User currentUser = userService.findById(id);
+        User currentUser = userServiceView.findById(id);
 
         if (currentUser==null) {
             System.out.println("User with id " + id + " not found");
@@ -97,7 +97,7 @@ public class HelloWorldRestController {
         currentUser.setCreate(null);
         currentUser.setUpdate(null);
         currentUser.setPassword(user.getPassword());
-        userService.updateUser(currentUser);
+        userServiceView.update(currentUser);
         return new ResponseEntity<User>(currentUser, HttpStatus.OK);
     }
 
@@ -109,13 +109,13 @@ public class HelloWorldRestController {
     public ResponseEntity<User> deleteUser(@PathVariable("id") long id) {
         System.out.println("Fetching & Deleting User with id " + id);
 
-        User user = userService.findById(id);
+        User user = userServiceView.findById(id);
         if (user == null) {
             System.out.println("Unable to delete. User with id " + id + " not found");
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
         }
 
-        userService.deleteUserById(id);
+        userServiceView.deleteById(id);
         return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
     }
 
@@ -127,7 +127,7 @@ public class HelloWorldRestController {
     public ResponseEntity<User> deleteAllUsers() {
         System.out.println("Deleting All Users");
 
-        userService.deleteAllUsers();
+        userServiceView.deleteAll();
         return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
     }
 
@@ -138,8 +138,8 @@ public class HelloWorldRestController {
 
     @RequestMapping(value = "/role/", method = RequestMethod.GET)
     public ResponseEntity<List<Roles>> listAllRoles() throws Exception{
-        roleService.findAll();
-        List<Roles> roles = roleService.findAllRoles();
+        roleServiceView.findAll();
+        List<Roles> roles = roleServiceView.findAll();
         if(roles.isEmpty()){
             return new ResponseEntity<List<Roles>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
         }
@@ -153,7 +153,7 @@ public class HelloWorldRestController {
     @RequestMapping(value = "/role/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Roles> getRoles(@PathVariable("id") long id) {
         System.out.println("Fetching Roles with id " + id);
-        Roles role = roleService.findById(id);
+        Roles role = roleServiceView.findById(id);
         if (role == null) {
             System.out.println("Roles with id " + id + " not found");
             return new ResponseEntity<Roles>(HttpStatus.NOT_FOUND);
@@ -169,12 +169,12 @@ public class HelloWorldRestController {
     public ResponseEntity<Void> createRoles(@RequestBody Roles role, UriComponentsBuilder ucBuilder) {
         System.out.println("Creating Roles " + role.getName());
 
-        if (roleService.isRolesExist(role)) {
+        if (roleServiceView.isExist(role)) {
             System.out.println("A Roles with name " + role.getName() + " already exist");
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }
 
-        roleService.saveRoles(role);
+        roleServiceView.save(role);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/role/{id}").buildAndExpand(role.getId()).toUri());
@@ -189,7 +189,7 @@ public class HelloWorldRestController {
     public ResponseEntity<Roles> updateRoles(@PathVariable("id") long id, @RequestBody Roles role) {
         System.out.println("Updating Roles " + id);
 
-        Roles currentRoles = roleService.findById(id);
+        Roles currentRoles = roleServiceView.findById(id);
 
         if (currentRoles==null) {
             System.out.println("Roles with id " + id + " not found");
@@ -200,7 +200,7 @@ public class HelloWorldRestController {
         currentRoles.setCreate(null);
         currentRoles.setUpdate(null);
 
-        roleService.updateRoles(currentRoles);
+        roleServiceView.update(currentRoles);
         return new ResponseEntity<Roles>(currentRoles, HttpStatus.OK);
     }
 
@@ -212,13 +212,13 @@ public class HelloWorldRestController {
     public ResponseEntity<Roles> deleteRoles(@PathVariable("id") long id) {
         System.out.println("Fetching & Deleting Roles with id " + id);
 
-        Roles role = roleService.findById(id);
+        Roles role = roleServiceView.findById(id);
         if (role == null) {
             System.out.println("Unable to delete. Roles with id " + id + " not found");
             return new ResponseEntity<Roles>(HttpStatus.NOT_FOUND);
         }
 
-        roleService.deleteRolesById(id);
+        roleServiceView.deleteById(id);
         return new ResponseEntity<Roles>(HttpStatus.NO_CONTENT);
     }
 
@@ -230,7 +230,7 @@ public class HelloWorldRestController {
     public ResponseEntity<Roles> deleteAllRoles() {
         System.out.println("Deleting All Roless");
 
-        roleService.deleteAllRoles();
+        roleServiceView.deleteAll();
         return new ResponseEntity<Roles>(HttpStatus.NO_CONTENT);
     }
 
@@ -247,7 +247,7 @@ public class HelloWorldRestController {
     @RequestMapping(value = "/userrole/", method = RequestMethod.GET)
     public ResponseEntity<List<UserRoles>> listAllUserRoles() throws Exception{
         userroleService.findAll();
-        List<UserRoles> userRoles = userroleService.findAllUserRoles();
+        List<UserRoles> userRoles = userroleService.findAll();
         if(userRoles.isEmpty()){
             return new ResponseEntity<List<UserRoles>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
         }
@@ -279,8 +279,8 @@ public class HelloWorldRestController {
         System.out.println("Creating UserRoles " + name + " " + username + " " + rolename);
 
         UserRoles userRoles = new UserRoles();
-        userRoles.setUser(userService.findByName(username));
-        userRoles.setRole(roleService.findByName(rolename));
+        userRoles.setUser(userServiceView.findByName(username));
+        userRoles.setRole(roleServiceView.findByName(rolename));
         userRoles.setName(name);
         userRoles.getUser().setCreate(null);
         userRoles.getUser().setUpdate(null);
@@ -292,7 +292,7 @@ public class HelloWorldRestController {
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }*/
 
-        userroleService.saveUserRoles(userRoles);
+        userroleService.save(userRoles);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/userrole/{id}").buildAndExpand(userroleService.findByName(name).getId()).toUri());
@@ -313,7 +313,7 @@ public class HelloWorldRestController {
             return new ResponseEntity<UserRoles>(HttpStatus.NOT_FOUND);
         }
 
-        userroleService.deleteUserRolesById(id);
+        userroleService.deleteById(id);
         return new ResponseEntity<UserRoles>(HttpStatus.NO_CONTENT);
     }
 
@@ -325,7 +325,7 @@ public class HelloWorldRestController {
     public ResponseEntity<UserRoles> deleteAllUserRoles() {
         System.out.println("Deleting All UserRoless");
 
-        userroleService.deleteAllUserRoles();
+        userroleService.deleteAll();
         return new ResponseEntity<UserRoles>(HttpStatus.NO_CONTENT);
     }
 }

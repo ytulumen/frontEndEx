@@ -11,21 +11,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableWebSecurity
 public class LoginSecurityConfig extends WebSecurityConfigurerAdapter {
-
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder authenticationMgr) throws Exception {
-        authenticationMgr.inMemoryAuthentication()
-                .withUser("journaldev")
-                .password("jd@123")
-                .authorities("ROLE_USER");
-        authenticationMgr.inMemoryAuthentication()
-                .withUser("yasin")
-                .password("tlmn")
-                .authorities("USERADMIN");
-        authenticationMgr.inMemoryAuthentication()
-                .withUser("role")
-                .password("tlmn")
-                .authorities("ROLEADMIN");
+    private CustomAuthenticationProvider authProvider;
+
+    @Override
+    protected void configure(
+            AuthenticationManagerBuilder auth) throws Exception {
+
+        auth.authenticationProvider(authProvider);
     }
 
     @Override
@@ -77,11 +70,11 @@ public class LoginSecurityConfig extends WebSecurityConfigurerAdapter {
 */
 
         http.authorizeRequests()
-                .antMatchers("/userpage").hasAuthority("USERADMIN");
+                .antMatchers("/userpage").hasAnyRole("ADMIN", "ROLE", "USER_ADMIN");
         http.authorizeRequests()
-                .antMatchers("/rolepage").hasAuthority("USERADMIN");
+                .antMatchers("/rolepage").hasAnyRole("ADMIN", "ROLE");
         http.authorizeRequests()
-                .antMatchers("/index").hasAuthority("USERADMIN")
+                .antMatchers("/index").hasAnyRole("ADMIN", "ROLE")
                 .and()
                 .formLogin().loginPage("/login.html")
                 .defaultSuccessUrl("/userpage")
