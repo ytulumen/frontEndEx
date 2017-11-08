@@ -1,5 +1,10 @@
 package com.yasin.springmvc.security;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.yasin.model.Roles;
+import com.yasin.model.User;
+import com.yasin.model.UserRoles;
 import com.yasin.springmvc.service.AbstractService;
 import com.yasin.springmvc.service.RoleServiceView;
 import com.yasin.springmvc.service.UserRolesServiceView;
@@ -22,7 +27,6 @@ import java.util.List;
 public class CustomAuthenticationProvider<T>
         implements AuthenticationProvider {
     private NetworkUtil networkUtil = new NetworkUtil();
-    private UserRolesServiceView userRolesServiceView;
 
     @Override
     public Authentication authenticate(Authentication authentication)
@@ -37,12 +41,15 @@ public class CustomAuthenticationProvider<T>
         String res = response.substring(response.indexOf("access_token")+15, response.indexOf("\"", response.indexOf("access_token")+16));
         System.out.println("result " + res);
 
+        String rolesString = networkUtil.networkService("/rest/userrole", "GET","");
+        List <UserRoles> items = new Gson().fromJson(rolesString.toString(), new TypeToken<ArrayList<UserRoles>>() {}.getType());
+
         List<GrantedAuthority> list = new ArrayList();
-/*        list.add(new SimpleGrantedAuthority("USER_ADMIN"));
-        list.add(new SimpleGrantedAuthority("USER"));
-        list.add(new SimpleGrantedAuthority("ROLE"));
-        list.add(new SimpleGrantedAuthority("ADMIN"));*/
-        list.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        for (int i = 0; i < items.size(); i++) {
+            if(name.equals(items.get(i).getUser().getName()))
+                list.add(new SimpleGrantedAuthority(items.get(i).getRole().getName()));
+        }
+
 
         return new UsernamePasswordAuthenticationToken(name, password, list);
 

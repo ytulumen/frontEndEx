@@ -69,11 +69,13 @@ public class LoginSecurityConfig extends WebSecurityConfigurerAdapter {
 */
 
         http.authorizeRequests()
-                .antMatchers("/userpage").hasAnyRole("ADMIN", "ROLE", "USER_ADMIN");
+                .antMatchers("/userpage").hasAnyRole("MANAGER", "ADMIN");
         http.authorizeRequests()
-                .antMatchers("/rolepage").hasAnyRole("ADMIN", "ROLE");
+                .antMatchers("/rolepage").hasAnyRole("MANAGER", "ADMIN", "USER");
         http.authorizeRequests()
-                .antMatchers("/index").hasAnyRole("ADMIN", "ROLE")
+                .antMatchers("/userrolepage").hasAnyRole("MANAGER", "ADMIN", "USER");
+        http.authorizeRequests()
+                .antMatchers("/index").hasAnyRole("MANAGER_ADMIN", "ROLE_ADMIN", "USER_ADMIN")
                 .and()
                 .formLogin().loginPage("/login.html")
                 .defaultSuccessUrl("/userpage")

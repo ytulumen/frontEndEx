@@ -7,15 +7,7 @@ import com.yasin.model.Roles;
 import com.yasin.model.User;
 import com.yasin.springmvc.service.AbstractService;
 import com.yasin.springmvc.util.NetworkUtil;
-import org.springframework.stereotype.Repository;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.ProtocolException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
