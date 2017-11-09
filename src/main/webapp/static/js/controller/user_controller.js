@@ -18,7 +18,15 @@ angular.module('myApp').controller('UserController', ['$scope', 'UserService', f
             .then(
             function(d) {
                 self.users = d;
-
+                for(var i=0; i<self.users.length ; ++i) {
+                    var time = self.users[i].create;
+                    var date = new Date(time);
+                    console.log(self.users[i]);
+                    self.users[i].create = date.toString();
+                    var time = self.users[i].update;
+                    var date = new Date(time);
+                    self.users[i].update = date.toString();
+                }
             },
             function(errResponse){
                 console.error('Error while fetching Users');

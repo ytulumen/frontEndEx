@@ -9,6 +9,7 @@ import com.yasin.springmvc.service.AbstractService;
 import com.yasin.springmvc.service.RoleServiceView;
 import com.yasin.springmvc.service.UserRolesServiceView;
 import com.yasin.springmvc.service.impl.AbstractServiceImpl;
+import com.yasin.springmvc.service.impl.UserServiceViewImpl;
 import com.yasin.springmvc.util.NetworkUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -18,7 +19,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
-import sun.nio.ch.Net;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,8 @@ import java.util.List;
 @Component
 public class CustomAuthenticationProvider<T>
         implements AuthenticationProvider {
-    private NetworkUtil networkUtil = new NetworkUtil();
+    @Autowired
+    private NetworkUtil networkUtil;
 
     @Override
     public Authentication authenticate(Authentication authentication)
@@ -34,12 +35,7 @@ public class CustomAuthenticationProvider<T>
 
         String name = authentication.getName();
         String password = authentication.getCredentials().toString();
-        String url = "/oauth/token?grant_type=password&username="+
-                name + "&password=" + password;
-        StringBuffer response = new StringBuffer(networkUtil.networkService(url,"POST", ""));
-        System.out.println(response.toString());
-        String res = response.substring(response.indexOf("access_token")+15, response.indexOf("\"", response.indexOf("access_token")+16));
-        System.out.println("result " + res);
+        String token = networkUtil.getByName(name, password);
 
         String rolesString = networkUtil.networkService("/rest/userrole", "GET","");
         List <UserRoles> items = new Gson().fromJson(rolesString.toString(), new TypeToken<ArrayList<UserRoles>>() {}.getType());
@@ -50,9 +46,7 @@ public class CustomAuthenticationProvider<T>
                 list.add(new SimpleGrantedAuthority(items.get(i).getRole().getName()));
         }
 
-
         return new UsernamePasswordAuthenticationToken(name, password, list);
-
     }
 
     @Override

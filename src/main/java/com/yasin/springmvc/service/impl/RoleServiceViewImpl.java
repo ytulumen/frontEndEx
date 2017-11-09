@@ -9,6 +9,6 @@ import org.springframework.stereotype.Service;
 public class RoleServiceViewImpl extends AbstractServiceImpl<Roles> implements RoleServiceView {
 
     public RoleServiceViewImpl() {
-        super.setUrl("/rest/user");
+        super.setUrl("/rest/role");
     }
 }

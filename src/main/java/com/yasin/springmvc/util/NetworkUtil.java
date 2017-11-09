@@ -1,6 +1,9 @@
 package com.yasin.springmvc.util;
 
 import com.yasin.springmvc.service.RoleServiceView;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -9,9 +12,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
-
+@Component
 public class NetworkUtil {
-    private static String accessToken;
+
+    @Autowired
+    NetworkUtil self;
+    private String username;
+    private String password;
     public String networkService(String halfUrl, String method, String send) {
         String lastUrl = "http://localhost:8080" + halfUrl;
         String value = "Basic bXktdHJ1c3RlZC1jbGllbnQ6c2VjcmV0";
@@ -19,7 +26,8 @@ public class NetworkUtil {
         try {
             boolean isOauth = lastUrl.contains("oauth/token");
             if(!isOauth) {
-                lastUrl += "?access_token=" + accessToken;
+
+                lastUrl += "?access_token=" + self.getByName(username, password);
             }
             URL obj = new URL(lastUrl);
             HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -56,9 +64,9 @@ public class NetworkUtil {
                 }
                 System.out.println(response.toString());
                 if(isOauth) {
-                    String res = response.substring(response.indexOf("access_token")+15, response.indexOf("\"", response.indexOf("access_token")+16));
-                    System.out.println("result " + res);
-                    accessToken = res;
+                    return response.substring(response.indexOf("access_token")+15,
+                            response.indexOf("\"", response.indexOf("access_token")+16));
+
                 }
             }
             in.close();
@@ -69,6 +77,15 @@ public class NetworkUtil {
         }catch (IOException e){
             e.printStackTrace();
         }
+        return response.toString();
+    }
+    @Cacheable("models")
+    public String getByName(String name, String password) {
+        this.username = name;
+        this.password = password;
+        String url = "/oauth/token?grant_type=password&username="+
+                name + "&password=" + password;
+        StringBuffer response = new StringBuffer(self.networkService(url,"POST", ""));
         return response.toString();
     }
 }

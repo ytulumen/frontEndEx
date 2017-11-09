@@ -1,6 +1,8 @@
 package com.yasin.springmvc.service;
 
 import com.yasin.model.User;
+import com.yasin.springmvc.util.NetworkUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,4 +17,6 @@ public interface AbstractService<T> {
     public T findById(long id);
     public void deleteAll();
     public boolean isExist(T item);
+
+
 }

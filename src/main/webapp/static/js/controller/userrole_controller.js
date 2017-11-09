@@ -21,6 +21,14 @@ angular.module('myApp').controller('UserRoleController', ['$scope', 'UserRoleSer
             .then(
                 function(d) {
                     self.userroles = d;
+                    for(var i=0 ; i<self.userroles.length ; ++i){
+                        var time = self.userroles[i].create;
+                        var date = new Date(time);
+                        self.userroles[i].create = date.toString();
+                        var time = self.userroles[i].update;
+                        var date = new Date(time);
+                        self.userroles[i].update = date.toString();
+                    }
                 },
                 function(errResponse){
                     console.error('Error while fetching UserRoles');

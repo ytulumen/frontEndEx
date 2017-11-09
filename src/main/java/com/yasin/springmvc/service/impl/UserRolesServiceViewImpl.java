@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 public class UserRolesServiceViewImpl extends AbstractServiceImpl<UserRoles> implements UserRolesServiceView {
 
     public UserRolesServiceViewImpl() {
-        super.setUrl("/rest/userroles");
+        super.setUrl("/rest/userrole");
+        super.setClazz(UserRoles.class);
     }
+
 }
