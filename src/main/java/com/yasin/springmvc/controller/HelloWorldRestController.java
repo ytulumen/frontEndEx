@@ -67,7 +67,7 @@ public class HelloWorldRestController {
     public ResponseEntity<Void> createUser(@RequestBody User user,    UriComponentsBuilder ucBuilder) {
         System.out.println("Creating User " + user.getName());
 
-        if (userServiceView.isUserExist(user)) {
+        if (userServiceView.isExist(user)) {
             System.out.println("A User with name " + user.getName() + " already exist");
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }
@@ -87,18 +87,16 @@ public class HelloWorldRestController {
     public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User user) {
         System.out.println("Updating User " + id);
 
-        User currentUser = userServiceView.findById(id);
+/*        User currentUser = userServiceView.findById(id);
 
         if (currentUser==null) {
             System.out.println("User with id " + id + " not found");
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
-        }
-        currentUser.setName(user.getName());
-        currentUser.setCreate(null);
-        currentUser.setUpdate(null);
-        currentUser.setPassword(user.getPassword());
-        userServiceView.update(currentUser);
-        return new ResponseEntity<User>(currentUser, HttpStatus.OK);
+        }*/
+        user.setCreate(null);
+        user.setUpdate(null);
+        userServiceView.update(user);
+        return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
 
@@ -109,11 +107,11 @@ public class HelloWorldRestController {
     public ResponseEntity<User> deleteUser(@PathVariable("id") long id) {
         System.out.println("Fetching & Deleting User with id " + id);
 
-        User user = userServiceView.findById(id);
+/*        User user = userServiceView.findById(id);
         if (user == null) {
             System.out.println("Unable to delete. User with id " + id + " not found");
             return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
-        }
+        }*/
 
         userServiceView.deleteById(id);
         return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
@@ -212,11 +210,11 @@ public class HelloWorldRestController {
     public ResponseEntity<Roles> deleteRoles(@PathVariable("id") long id) {
         System.out.println("Fetching & Deleting Roles with id " + id);
 
-        Roles role = roleServiceView.findById(id);
+/*        Roles role = roleServiceView.findById(id);
         if (role == null) {
             System.out.println("Unable to delete. Roles with id " + id + " not found");
             return new ResponseEntity<Roles>(HttpStatus.NOT_FOUND);
-        }
+        }*/
 
         roleServiceView.deleteById(id);
         return new ResponseEntity<Roles>(HttpStatus.NO_CONTENT);
@@ -307,11 +305,11 @@ public class HelloWorldRestController {
     public ResponseEntity<UserRoles> deleteUserRoles(@PathVariable("id") long id) {
         System.out.println("Fetching & Deleting UserRoles with id " + id);
 
-        UserRoles userrole = userroleService.findById(id);
+/*        UserRoles userrole = userroleService.findById(id);
         if (userrole == null) {
             System.out.println("Unable to delete. UserRoles with id " + id + " not found");
             return new ResponseEntity<UserRoles>(HttpStatus.NOT_FOUND);
-        }
+        }*/
 
         userroleService.deleteById(id);
         return new ResponseEntity<UserRoles>(HttpStatus.NO_CONTENT);

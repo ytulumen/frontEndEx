@@ -164,8 +164,8 @@
                 <tr ng-repeat="u in ctrl.userroles">
                     <td><span ng-bind="u.id"></span></td>
                     <td><span ng-bind="u.name"></span></td>
-                    <td><span ng-bind="u.create"></span></td>
-                    <td><span ng-bind="u.update"></span></td>
+                    <td><span>{{u.create | date: 'dd.MM.yyyy HH:mm'}}</span></td>
+                    <td><span>{{u.update | date: 'dd.MM.yyyy HH:mm'}}</span></td>
                     <td><span ng-bind="u.user.name"></span></td>
                     <td><span ng-bind="u.role.name"></span></td>
                     <td>

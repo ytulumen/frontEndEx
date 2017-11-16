@@ -18,14 +18,6 @@ angular.module('myApp').controller('RoleController', ['$scope', 'RoleService', f
             .then(
                 function(d) {
                     self.roles = d;
-                    for(var i=0 ; i<self.roles.length ; ++i){
-                        var time = self.roles[i].create;
-                        var date = new Date(time);
-                        self.roles[i].create = date.toString();
-                        var time = self.roles[i].update;
-                        var date = new Date(time);
-                        self.roles[i].update = date.toString();
-                    }
                 },
                 function(errResponse){
                     console.error('Error while fetching Roles');

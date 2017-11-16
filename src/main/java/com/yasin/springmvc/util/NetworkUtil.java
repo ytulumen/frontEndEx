@@ -54,9 +54,10 @@ public class NetworkUtil {
             System.out.println("\n" + halfUrl + "___Sending '"+ method + "' request to URL : " + lastUrl);
             System.out.println("Response Code : " + responseCode + "SEND " + send);
 
-            BufferedReader in = new BufferedReader(
-                    new InputStreamReader(con.getInputStream()));
+
             if(isOauth || method.equals("GET")) {
+                BufferedReader in = new BufferedReader(
+                        new InputStreamReader(con.getInputStream()));
                 String inputLine;
                 response = new StringBuffer();
                 while ((inputLine = in.readLine()) != null) {
@@ -68,8 +69,8 @@ public class NetworkUtil {
                             response.indexOf("\"", response.indexOf("access_token")+16));
 
                 }
+                in.close();
             }
-            in.close();
         }catch (java.net.MalformedURLException e){
             e.printStackTrace();
         }catch (ProtocolException e){

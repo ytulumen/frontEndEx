@@ -136,8 +136,8 @@
                 <tr ng-repeat="u in ctrl.roles">
                     <td><span ng-bind="u.id"></span></td>
                     <td><span ng-bind="u.name"></span></td>
-                    <td><span ng-bind="u.create"></span></td>
-                    <td><span ng-bind="u.update"></span></td>
+                    <td><span>{{u.create | date: 'dd.MM.yyyy HH:mm'}}</span></td>
+                    <td><span>{{u.update | date: 'dd.MM.yyyy HH:mm'}}</span></td>
                     <td>
                         <button type="button" ng-click="ctrl.edit(u.id)" class="btn btn-success custom-width">Edit</button>  <button type="button" ng-click="ctrl.remove(u.id)" class="btn btn-danger custom-width">Remove</button>
                     </td>

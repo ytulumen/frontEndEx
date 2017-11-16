@@ -23,6 +23,7 @@ public abstract class AbstractServiceImpl<T extends AbsClass> implements Abstrac
     private List<T> items;
     private Class clazz;
     private String accessToken;
+    protected Type type;
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
@@ -37,25 +38,15 @@ public abstract class AbstractServiceImpl<T extends AbsClass> implements Abstrac
         StringBuffer response = new StringBuffer(networkUtil.networkService(url,"GET", ""));
         Gson gson = new Gson();
         System.out.println(response.toString());
-        Type type;
-        if(clazz == Roles.class)
-            type = new TypeToken<ArrayList<Roles>>() {}.getType();
-        else if(clazz == User.class)
-            type = new TypeToken<ArrayList<User>>() {}.getType();
-        else
-            type = new TypeToken<ArrayList<UserRoles>>() {}.getType();
+
         items = gson.fromJson(response.toString(), type);
         for (int i = 0; i < items.size(); i++) {
             System.out.println(items.get(i).toString());
         }
         return items;
     }
-    public boolean isUserExist(T item) {
-        return findByName(item.getName())!=null;
-    }
     public void deleteById(long id) {
-        url += "/id="+id;
-        networkUtil.networkService(url ,"DELETE","");
+        networkUtil.networkService(url + "/id=" + id ,"DELETE","");
     }
     public void update(T item) {
         Gson gson = new Gson();
@@ -68,27 +59,18 @@ public abstract class AbstractServiceImpl<T extends AbsClass> implements Abstrac
         networkUtil.networkService(url,"POST", send);
     }
     public T findByName(String name) {
-        findAll();
-        for(T item : items){
-            if(item.getName().equalsIgnoreCase(name)){
-                return item;
-            }
-        }
-        return null;
+        return new Gson().fromJson(networkUtil.networkService(url + "/name=" + name ,"GET",""), type);
+
     }
     public T findById(long id)  {
-        findAll();
-        for (T item: items) {
-            if(item.getId()==id)
-                return item;
-        }
-        return null;
+        return new Gson().fromJson(networkUtil.networkService(url + "/id=" + id ,"GET",""), type);
+
     }
     public void deleteAll() {
 
     }
     public boolean isExist(T item) {
-        return false;
+        return findByName(item.getName())!=null;
     }
 
 }

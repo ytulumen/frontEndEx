@@ -9,7 +9,6 @@ import java.util.List;
 public interface AbstractService<T> {
     public void setUrl(String url);
     public List<T> findAll();
-    public boolean isUserExist(T item);
     public void deleteById(long id);
     public void update(T item);
     public void save(T item);
