@@ -37,12 +37,8 @@ public abstract class AbstractServiceImpl<T extends AbsClass> implements Abstrac
     public List<T> findAll(){
         StringBuffer response = new StringBuffer(networkUtil.networkService(url,"GET", ""));
         Gson gson = new Gson();
-        System.out.println(response.toString());
 
         items = gson.fromJson(response.toString(), type);
-        for (int i = 0; i < items.size(); i++) {
-            System.out.println(items.get(i).toString());
-        }
         return items;
     }
     public void deleteById(long id) {

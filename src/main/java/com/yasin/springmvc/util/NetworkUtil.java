@@ -51,10 +51,6 @@ public class NetworkUtil {
                 daos.close();
             }
             int responseCode = con.getResponseCode();
-            System.out.println("\n" + halfUrl + "___Sending '"+ method + "' request to URL : " + lastUrl);
-            System.out.println("Response Code : " + responseCode + "SEND " + send);
-
-
             if(isOauth || method.equals("GET")) {
                 BufferedReader in = new BufferedReader(
                         new InputStreamReader(con.getInputStream()));
@@ -63,7 +59,6 @@ public class NetworkUtil {
                 while ((inputLine = in.readLine()) != null) {
                     response.append(inputLine);
                 }
-                System.out.println(response.toString());
                 if(isOauth) {
                     return response.substring(response.indexOf("access_token")+15,
                             response.indexOf("\"", response.indexOf("access_token")+16));

@@ -101,7 +101,6 @@ public class UserTest {
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
             }
-            System.out.println(response.toString());
             String token = response.substring(response.indexOf("access_token")+15,
                     response.indexOf("\"", response.indexOf("access_token")+16));
             in.close();
