@@ -58,10 +58,7 @@ public abstract class AbstractServiceImpl<T extends AbsClass> implements Abstrac
         String send = gson.toJson(item);
         networkUtil.networkService(url,"POST", send);
     }
-    public T findByName(String name) {
-        return new Gson().fromJson(networkUtil.networkService(url + "/name=" + name ,"GET",""), type);
 
-    }
     public T findById(long id)  {
         return new Gson().fromJson(networkUtil.networkService(url + "/id=" + id ,"GET",""), type);
 

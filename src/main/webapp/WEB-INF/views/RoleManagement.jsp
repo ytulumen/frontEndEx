@@ -69,7 +69,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div><%--
                 <input type="hidden" ng-model="ctrl.role.password" />
                 <div class="row">
                     <div class="form-group col-md-12">
@@ -110,7 +110,7 @@
                 --%>
                 <div class="row">
                     <div class="form-actions floatRight">
-                        <input type="submit"  value="{{!ctrl.role.id ? 'Add' : 'Update'}}" class="btn btn-primary btn-sm" ng-disabled="myForm.$invalid">
+                        <input type="submit" id="addButton"  value="{{!ctrl.role.id ? 'Add' : 'Update'}}" class="btn btn-primary btn-sm" ng-disabled="myForm.$invalid">
                         <button type="button" ng-click="ctrl.reset()" class="btn btn-warning btn-sm" ng-disabled="myForm.$pristine">Reset Form</button>
                     </div>
                 </div>
@@ -128,7 +128,6 @@
                     <th>Name</th>
                     <th>Create Date</th>
                     <th>Update Date</th>
-                    <th>Password</th>
                     <th width="20%"></th>
                 </tr>
                 </thead>
@@ -139,7 +138,8 @@
                     <td><span>{{u.create | date: 'dd.MM.yyyy HH:mm'}}</span></td>
                     <td><span>{{u.update | date: 'dd.MM.yyyy HH:mm'}}</span></td>
                     <td>
-                        <button type="button" ng-click="ctrl.edit(u.id)" class="btn btn-success custom-width">Edit</button>  <button type="button" ng-click="ctrl.remove(u.id)" class="btn btn-danger custom-width">Remove</button>
+                        <button type="button" id="editRole" ng-click="ctrl.edit(u.id)" class="btn btn-success custom-width">Edit</button>
+                        <button type="button" id="removeRole" ng-click="ctrl.remove(u.id)" class="btn btn-danger custom-width">Remove</button>
                     </td>
                 </tr>
                 </tbody>
